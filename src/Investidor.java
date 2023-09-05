@@ -14,6 +14,10 @@ public class Investidor {
         this.carteira = new DynamicArray<>();
     }
 
+    public void addAcao(Acao acao){
+        carteira.add(acao);
+    }
+
     public Investidor(int codigo, String nome) {
         this(codigo, nome, 0.0);
     }
