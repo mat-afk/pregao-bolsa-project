@@ -1,23 +1,12 @@
-public class Empresa implements verificadorCotas{
-
+public class Local implements verificadorCotas{
+    private String endereco;
     private String nome;
     private int cotas;
 
-    public Empresa(String nome, int cotas){
+    public Local(String endereco, String nome, int cotas){
+        this.endereco = endereco;
         this.nome = nome;
-        if (cotas <= 0){
-            throw new RuntimeException("O numero de cotas da empresa não pode ser abaixo de 1");
-        } else {
         this.cotas = cotas;
-        }
-    }
-
-    public boolean verificarCotas(int cotas){
-        if(this.cotas == 0 || this.cotas < cotas){
-            return false;
-        } else {
-            return true;
-        }
     }
 
     @Override
@@ -32,4 +21,10 @@ public class Empresa implements verificadorCotas{
     public String getNome(){
         return nome;
     }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    
 }

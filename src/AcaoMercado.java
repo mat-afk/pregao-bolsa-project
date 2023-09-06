@@ -7,10 +7,15 @@ public class AcaoMercado extends Acao {
         super(nome, preco);
         this.cotas = cotas;
         this.empresa = empresa;
+        empresa.comprarCotas(cotas);
     }
 
     @Override
     public double calcularValor() {
         return getPreco() * cotas;
+    }
+
+    public String getEmpresa() {
+        return empresa.getNome();
     }
 }

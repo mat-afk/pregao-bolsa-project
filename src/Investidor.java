@@ -14,12 +14,12 @@ public class Investidor {
         this.carteira = new DynamicArray<>();
     }
 
-    public void addAcao(Acao acao){
-        carteira.add(acao);
-    }
-
     public Investidor(int codigo, String nome) {
         this(codigo, nome, 0.0);
+    }
+
+    public void addAcao(Acao acao){
+        carteira.add(acao);
     }
 
     public double calcularTotal() {
@@ -28,5 +28,17 @@ public class Investidor {
             valorTotal += acao.calcularValor();
         }
         return valorTotal;
+    }
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public int getCodigo() {
+        return codigo;
     }
 }
