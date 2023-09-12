@@ -18,8 +18,12 @@ public class Investidor {
         this(codigo, nome, 0.0);
     }
 
-    public void addAcao(Acao acao){
+    public void comprarAcao(Acao acao){
+        if(acao.calcularValor() > saldo){
+            throw new RuntimeException("Seu saldo é insuficiente para a compra desta ação");
+        }
         carteira.add(acao);
+        saldo -= acao.calcularValor();
     }
 
     public double calcularTotal() {

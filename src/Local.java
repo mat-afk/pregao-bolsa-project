@@ -1,21 +1,10 @@
-public class Local implements verificadorCotas{
+public class Local{
     private String endereco;
     private String nome;
-    private int cotas;
 
-    public Local(String endereco, String nome, int cotas){
+    public Local(String endereco, String nome){
         this.endereco = endereco;
         this.nome = nome;
-        this.cotas = cotas;
-    }
-
-    @Override
-    public void comprarCotas(int cotas){
-        if(this.cotas == 0 || this.cotas < cotas){
-           throw new RuntimeException("o numeros de cotas compradas ecede o limite da empresa");
-        } else {
-            this.cotas -= cotas;
-        }
     }
 
     public String getNome(){

@@ -1,4 +1,4 @@
-public class Empresa implements verificadorCotas{
+public class Empresa{
 
     private String nome;
     private int cotas;
@@ -12,15 +12,6 @@ public class Empresa implements verificadorCotas{
         }
     }
 
-    public boolean verificarCotas(int cotas){
-        if(this.cotas == 0 || this.cotas < cotas){
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    @Override
     public void comprarCotas(int cotas){
         if(this.cotas == 0 || this.cotas < cotas){
            throw new RuntimeException("o numeros de cotas compradas ecede o limite da empresa");
