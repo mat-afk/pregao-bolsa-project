@@ -31,6 +31,20 @@ public class DynamicArray<T> implements Iterable<T> {
         
         size--;
     }
+
+    public void remove(T element) {
+        if (!isEmpty()) {
+            throw new IndexOutOfBoundsException("Array is empty");
+        }
+
+        for (int i = 0; i < size - 1; i++) {
+            if(arr[i].equals(element)) {
+                remove(i);
+            }
+        }
+
+        size--;
+    }
     
     public boolean isEmpty() {
         return size == 0;

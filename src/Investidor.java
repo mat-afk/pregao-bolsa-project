@@ -1,48 +1,69 @@
-import estruturasdedados.DynamicArray;
+import ativos.Ativo;
 
 public class Investidor {
 
-    private int codigo;
-    private String nome;
+    private final int id;
+    private final String nome;
+    private String cpf;
     private double saldo;
-    private DynamicArray<Acao> carteira;
+    private Carteira carteira;
 
-    public Investidor(int codigo, String nome, double saldo) {
-        this.codigo = codigo;
+    public Investidor(int id, String nome, String cpf, double valor) {
+        this.id = id;
         this.nome = nome;
-        this.saldo = saldo;
-        this.carteira = new DynamicArray<>();
+        setCpf(cpf);
+        this.saldo = valor;
+        this.carteira = new Carteira();
     }
 
-    public Investidor(int codigo, String nome) {
-        this(codigo, nome, 0.0);
+    public Investidor(int id, String nome, String cpf) {
+        this(id, nome, cpf, 0.0);
     }
 
-    public void comprarAcao(Acao acao){
+    public void depositar(double valor) {
+        saldo += valor;
+    }
+
+    public void comprarAcao(Ativo acao){
         if(acao.calcularValor() > saldo){
-            throw new RuntimeException("Seu saldo é insuficiente para a compra desta ação");
+            throw new RuntimeException("Seu saldo é insuficiente para a compra desta ação.");
         }
-        carteira.add(acao);
         saldo -= acao.calcularValor();
+        carteira.addAtivo(acao);
     }
 
-    public double calcularTotal() {
-        double valorTotal = 0.0;
-        for (Acao acao : carteira) {
-            valorTotal += acao.calcularValor();
-        }
-        return valorTotal;
-    }
-
-    public double getSaldo() {
-        return saldo;
+    public int getId() {
+        return id;
     }
 
     public String getNome() {
         return nome;
     }
 
-    public int getCodigo() {
-        return codigo;
+    public String getCpf() {
+        return cpf;
+    }
+
+    private void setCpf(String cpf) {
+        if(!cpf.matches("^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$") && !Validador.validarCPF(cpf)) {
+            throw new IllegalArgumentException("CPF inválido");
+        }
+        this.cpf = cpf;
+    }
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
+    public Carteira getCarteira() {
+        return carteira;
+    }
+
+    public void setCarteira(Carteira carteira) {
+        this.carteira = carteira;
     }
 }
