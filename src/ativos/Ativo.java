@@ -1,24 +1,25 @@
 package ativos;
 
-import java.util.Date;
+import entities.Empresa;
 
 public abstract class Ativo {
 
     private int id;
     private String nome;
     private String codigo;
+    private Empresa empresa;
     private double cotacao;
-    private Date dataNegociacao;
 
-    public Ativo(int id, String nome, String codigo, double cotacao) {
+    public Ativo(int id, String nome, String codigo, Empresa empresa, double cotacao) {
         this.id = id;
         this.nome = nome;
         setCodigo(codigo);
+        this.empresa = empresa;
         this.cotacao = cotacao;
     }
 
-    public Ativo(int id, String nome, String codigo) {
-        this(id, nome, codigo, 0.0);
+    public Ativo(int id, String nome, String codigo, Empresa empresa) {
+        this(id, nome, codigo, empresa, 0.0);
     }
 
     public abstract double calcularValor();
@@ -44,11 +45,11 @@ public abstract class Ativo {
         this.codigo = codigo;
     }
 
-    public double getCotacao() {
-        return cotacao;
+    public Empresa getEmpresa() {
+        return empresa;
     }
 
-    public Date getDataNegociacao() {
-        return dataNegociacao;
+    public double getCotacao() {
+        return cotacao;
     }
 }

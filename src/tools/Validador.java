@@ -1,3 +1,5 @@
+package tools;
+
 public class Validador {
 
     public static boolean validarCPF(String cpf) {

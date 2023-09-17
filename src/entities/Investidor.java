@@ -1,4 +1,9 @@
+package entities;
+
 import ativos.Ativo;
+import org.jetbrains.annotations.NotNull;
+import ordens.*;
+import tools.*;
 
 public class Investidor {
 
@@ -7,29 +12,39 @@ public class Investidor {
     private String cpf;
     private double saldo;
     private Carteira carteira;
+    private Corretora corretora;
 
-    public Investidor(int id, String nome, String cpf, double valor) {
+    public Investidor(int id, String nome, String cpf, double valor, Corretora corretora) {
         this.id = id;
         this.nome = nome;
         setCpf(cpf);
         this.saldo = valor;
+        this.corretora = corretora;
         this.carteira = new Carteira();
     }
 
-    public Investidor(int id, String nome, String cpf) {
-        this(id, nome, cpf, 0.0);
+    public Investidor(int id, String nome, String cpf, Corretora corretora) {
+        this(id, nome, cpf, 0.0, corretora);
     }
 
     public void depositar(double valor) {
         saldo += valor;
     }
 
-    public void comprarAcao(Ativo acao){
-        if(acao.calcularValor() > saldo){
-            throw new RuntimeException("Seu saldo é insuficiente para a compra desta ação.");
-        }
-        saldo -= acao.calcularValor();
-        carteira.addAtivo(acao);
+    public void solicitarCompra(Ativo acao, double preco, int quantidade) {
+        corretora.receberOrdem(new OrdemCompra(acao, this, preco, quantidade));
+    }
+
+    public void solicitarCompra(Ativo acao, int quantidade) {
+        solicitarCompra(acao, 0.0, quantidade);
+    }
+
+    public void solicitarVenda(Ativo acao, double preco, int quantidade) {
+        corretora.receberOrdem(new OrdemVenda(acao, this, preco, quantidade));
+    }
+
+    public void solicitarVenda(Ativo acao, int quantidade) {
+        solicitarVenda(acao, 0.0, quantidade);
     }
 
     public int getId() {
@@ -44,7 +59,7 @@ public class Investidor {
         return cpf;
     }
 
-    private void setCpf(String cpf) {
+    private void setCpf(@NotNull String cpf) {
         if(!cpf.matches("^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$") && !Validador.validarCPF(cpf)) {
             throw new IllegalArgumentException("CPF inválido");
         }

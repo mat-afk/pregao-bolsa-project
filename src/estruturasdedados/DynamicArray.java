@@ -55,7 +55,7 @@ public class DynamicArray<T> implements Iterable<T> {
     }
     
     public T get(int index) {
-        if (index < 0 || index >= size) {
+        if(index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index out of range");
         }
         return arr[index];

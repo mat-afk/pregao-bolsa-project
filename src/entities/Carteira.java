@@ -1,3 +1,5 @@
+package entities;
+
 import ativos.Ativo;
 import estruturasdedados.DynamicArray;
 
