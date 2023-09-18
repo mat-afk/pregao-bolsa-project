@@ -9,11 +9,11 @@ import ordens.OrdemVenda;
 
 public class Bolsa {
 
-    private String nome;
-    private LinkedList<Corretora> corretoras;
-    private LinkedList<Empresa> empresas;
-    private Fila<Ordem> ordensDeCompra;
-    private Fila<Ordem> ordensDeVenda;
+    private final String nome;
+    private final LinkedList<Corretora> corretoras;
+    private final LinkedList<Empresa> empresas;
+    private final Fila<Ordem> ordensDeCompra;
+    private final Fila<Ordem> ordensDeVenda;
 
     public Bolsa(String nome) {
         this.nome = nome;
@@ -67,8 +67,13 @@ public class Bolsa {
 
                         int quantidadeNegociada = Math.min(compra.getQuantidade(), venda.getQuantidade());
 
-                        venda.getAtivo().getHistorico().addRegistro(new Registro(venda, compra.getPreco(), quantidadeNegociada));
-                        compra.getAtivo().getHistorico().addRegistro(new Registro(compra, compra.getPreco(), quantidadeNegociada));
+                        Registro r1 = new Registro(venda, compra.getPreco(), quantidadeNegociada);
+                        venda.getAtivo().getHistorico().addRegistro(r1);
+                        DatabaseManager.gravarRegistro(r1);
+
+                        Registro r2 = new Registro(compra, compra.getPreco(), quantidadeNegociada);
+                        compra.getAtivo().getHistorico().addRegistro(r2);
+                        DatabaseManager.gravarRegistro(r2);
 
                         venda.getInvestidor().depositar(quantidadeNegociada * compra.getPreco());
                         compra.getInvestidor().descontar(quantidadeNegociada * compra.getPreco());
