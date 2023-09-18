@@ -1,6 +1,16 @@
-package tools;
+package main;
 
 public class Validador {
+
+    public static boolean validarCodigo(String codigo) {
+
+        /*
+        XXXX = 04 letras maiúsculas que representam o nome do emissor
+        Y = 01 número que representa o tipo da ação, adotado 3 para ordinária; 4 para preferencial; 5, 6, 7, 8 para preferenciais classes A, B, C e D, respectivamente
+        */
+
+        return codigo.matches("^[A-Z]{4}[345678]$");
+    }
 
     public static boolean validarCPF(String cpf) {
         cpf = cpf.replaceAll("[^0-9]", "");

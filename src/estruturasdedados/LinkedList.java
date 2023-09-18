@@ -43,12 +43,10 @@ public class LinkedList<T> implements Iterable<T> {
 
     public void addFirst(T data) {
         Node<T> newNode = new Node<>(data);
-        if(head == null) {
-            head = newNode;
-        } else {
+        if (head != null) {
             newNode.next = head;
-            head = newNode;
         }
+        head = newNode;
         size++;
     }
 
@@ -81,6 +79,27 @@ public class LinkedList<T> implements Iterable<T> {
             }
         }
         size--;
+    }
+
+    public void remove(T data) {
+        Node<T> current = head;
+        Node<T> prev = null;
+
+        while (current != null) {
+            if (current.data.equals(data)) {
+                if (prev == null) {
+                    head = current.next;
+                } else {
+                    prev.next = current.next;
+                }
+                size--;
+                return;
+            }
+            prev = current;
+            current = current.next;
+        }
+
+        throw new IllegalArgumentException("Elemento não encontrado na lista");
     }
 
     public void removeFirst() {
@@ -127,7 +146,7 @@ public class LinkedList<T> implements Iterable<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new Iterator<T>() {
+        return new Iterator<>() {
             private int currentIndex = 0;
 
             @Override

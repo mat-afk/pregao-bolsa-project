@@ -1,28 +1,28 @@
 package entities;
 
-import estruturasdedados.DynamicArray;
 import estruturasdedados.Fila;
+import estruturasdedados.LinkedList;
+import main.Validador;
 import ordens.Ordem;
-import tools.*;
 
 public class Corretora {
 
     private int id;
     private String nome;
     private String cnpj;
-    private DynamicArray<Investidor> clientes;
+    private LinkedList<Investidor> clientes;
     private Fila<Ordem> ordens;
 
     public Corretora(int id, String nome, String cnpj) {
         this.id = id;
         this.nome = nome;
         this.cnpj = cnpj;
-        this.clientes = new DynamicArray<>();
+        this.clientes = new LinkedList<>();
         this.ordens = new Fila<>();
     }
 
     public void addCliente(Investidor cliente) {
-        clientes.add(cliente);
+        clientes.addLast(cliente);
     }
 
     public void removerCliente(Investidor cliente) {
@@ -30,7 +30,7 @@ public class Corretora {
     }
 
     public void receberOrdem(Ordem ordem) {
-        ordens.add(ordem);
+        ordens.enqueue(ordem);
     }
 
     public int getId() {
@@ -60,7 +60,7 @@ public class Corretora {
         this.cnpj = cnpj;
     }
 
-    public DynamicArray<Investidor> getClientes() {
+    public LinkedList<Investidor> getClientes() {
         return clientes;
     }
 

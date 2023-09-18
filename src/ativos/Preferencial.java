@@ -10,9 +10,4 @@ public class Preferencial extends Ativo {
     public Preferencial(int id, String nome, String codigo, Empresa empresa) {
         super(id, nome, codigo, empresa);
     }
-
-    @Override
-    public double calcularValor() {
-        return 0;
-    }
 }

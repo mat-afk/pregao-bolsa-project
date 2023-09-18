@@ -1,9 +1,8 @@
 package entities;
 
 import ativos.Ativo;
-import org.jetbrains.annotations.NotNull;
+import main.Validador;
 import ordens.*;
-import tools.*;
 
 public class Investidor {
 
@@ -12,7 +11,7 @@ public class Investidor {
     private String cpf;
     private double saldo;
     private Carteira carteira;
-    private Corretora corretora;
+    private final Corretora corretora;
 
     public Investidor(int id, String nome, String cpf, double valor, Corretora corretora) {
         this.id = id;
@@ -31,16 +30,20 @@ public class Investidor {
         saldo += valor;
     }
 
-    public void solicitarCompra(Ativo acao, double preco, int quantidade) {
-        corretora.receberOrdem(new OrdemCompra(acao, this, preco, quantidade));
+    public void descontar(double valor) {
+        saldo -= valor;
     }
 
-    public void solicitarCompra(Ativo acao, int quantidade) {
-        solicitarCompra(acao, 0.0, quantidade);
+    public void solicitarCompra(Ativo acao, double preco, int quantidade) {
+        corretora.receberOrdem(new OrdemCompra(acao, this, preco, quantidade));
+        carteira.addAtivo(acao);
     }
 
     public void solicitarVenda(Ativo acao, double preco, int quantidade) {
-        corretora.receberOrdem(new OrdemVenda(acao, this, preco, quantidade));
+        if(carteira.ativoInCarteira(acao)) {
+            corretora.receberOrdem(new OrdemVenda(acao, this, preco, quantidade));
+        }
+        throw new IllegalArgumentException("Você não pode vender uma ação que você não possui.");
     }
 
     public void solicitarVenda(Ativo acao, int quantidade) {
@@ -59,7 +62,7 @@ public class Investidor {
         return cpf;
     }
 
-    private void setCpf(@NotNull String cpf) {
+    private void setCpf(String cpf) {
         if(!cpf.matches("^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$") && !Validador.validarCPF(cpf)) {
             throw new IllegalArgumentException("CPF inválido");
         }

@@ -6,7 +6,7 @@ public class ArvoreBinaria<T> {
     private T valor;
     private ArvoreBinaria<T> esquerda;
     private ArvoreBinaria<T> direita;
-    private Comparator<T> comparador;
+    private final Comparator<T> comparador;
 
     public ArvoreBinaria(T valor, Comparator<T> comparador) {
         this.valor = valor;
@@ -15,18 +15,18 @@ public class ArvoreBinaria<T> {
         this.comparador = comparador;
     }
 
-    public void inserir(T valor) {
+    public void add(T valor) {
         if (comparador.compare(valor, this.valor) < 0) {
             if (this.esquerda == null) {
                 this.esquerda = new ArvoreBinaria<T>(valor, comparador);
             } else {
-                this.esquerda.inserir(valor);
+                this.esquerda.add(valor);
             }
         } else if (comparador.compare(valor, this.valor) > 0) {
             if (this.direita == null) {
                 this.direita = new ArvoreBinaria<T>(valor, comparador);
             } else {
-                this.direita.inserir(valor);
+                this.direita.add(valor);
             }
         }
     }

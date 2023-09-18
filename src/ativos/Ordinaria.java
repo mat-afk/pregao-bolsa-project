@@ -11,9 +11,4 @@ public class Ordinaria extends Ativo {
     public Ordinaria(int id, String nome, String codigo, Empresa empresa) {
         super(id, nome, codigo, empresa);
     }
-
-    @Override
-    public double calcularValor() {
-        return 0;
-    }
 }

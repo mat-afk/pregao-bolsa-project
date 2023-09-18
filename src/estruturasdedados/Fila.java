@@ -1,50 +1,86 @@
 package estruturasdedados;
+import java.util.Iterator;
 
-public class Fila<E> {
+public class Fila<T> implements Iterable<T> {
+    private Node<T> head;
+    private Node<T> tail;
+    private int size;
 
-    private E[] elements;
-    private int head;
-    private int tail;
-    private static final int DEFAULT_SIZE = 10;
-    
-    @SuppressWarnings("unchecked")
+    private static class Node<T> {
+        private final T data;
+        private Node<T> next;
+
+        public Node(T data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+
     public Fila() {
-        elements = (E[]) new Object[DEFAULT_SIZE];
-        head = 0;
-        tail = -1;
-    }
-    
-    public void add(E element) {
-        if (tail == elements.length - 1) {
-            redimensionarFila();
-        }
-        tail++;
-        elements[tail] = element;
-    }
-    
-    public E remove() {
-        if (head > tail) {
-            System.out.println("Fila vazia!");
-            return null;
-        }
-        E element = elements[head];
-        head++;
-        return element;
-    }
-    
-    public E peek() {
-        if (head > tail) {
-            System.out.println("Fila vazia!");
-            return null;
-        }
-        return elements[head];
+        head = null;
+        tail = null;
+        size = 0;
     }
 
-    @SuppressWarnings("unchecked")
-    private void redimensionarFila() {
-        int newSize = elements.length * 2;
-        E[] newQueue = (E[]) new Object[newSize];
-        System.arraycopy(elements, 0, newQueue, 0, tail + 1);
-        elements = newQueue;
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    public int size() {
+        return size;
+    }
+
+    public void enqueue(T data) {
+        Node<T> newNode = new Node<>(data);
+        if (isEmpty()) {
+            head = newNode;
+        } else {
+            tail.next = newNode;
+        }
+        tail = newNode;
+        size++;
+    }
+
+    public void dequeue() {
+        if (isEmpty()) {
+            throw new IllegalArgumentException("Fila vazia");
+        }
+        T data = head.data;
+        head = head.next;
+        size--;
+        if (isEmpty()) {
+            tail = null;
+        }
+    }
+
+    public T peek() {
+        if (isEmpty()) {
+            throw new IllegalArgumentException("Fila vazia");
+        }
+        return head.data;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new FilaIterator();
+    }
+
+    private class FilaIterator implements Iterator<T> {
+        private Node<T> current = head;
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public T next() {
+            if (!hasNext()) {
+                throw new IllegalArgumentException();
+            }
+            T data = current.data;
+            current = current.next;
+            return data;
+        }
     }
 }

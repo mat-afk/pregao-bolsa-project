@@ -20,4 +20,27 @@ public abstract class Ordem {
         this.dataEmissao = LocalDateTime.now();
     }
 
+    public Ativo getAtivo() {
+        return ativo;
+    }
+
+    public Investidor getInvestidor() {
+        return investidor;
+    }
+
+    public double getPreco() {
+        return preco;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
+    }
+
+    public LocalDateTime getDataEmissao() {
+        return dataEmissao;
+    }
 }
