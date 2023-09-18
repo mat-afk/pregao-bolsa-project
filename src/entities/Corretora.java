@@ -1,5 +1,6 @@
 package entities;
 
+import database.DatabaseManager;
 import estruturasdedados.Fila;
 import estruturasdedados.LinkedList;
 import main.Validador;
@@ -23,6 +24,7 @@ public class Corretora {
 
     public void addCliente(Investidor cliente) {
         clientes.addLast(cliente);
+        DatabaseManager.gravarInvestidor(cliente);
     }
 
     public void removerCliente(Investidor cliente) {
@@ -30,6 +32,7 @@ public class Corretora {
     }
 
     public void receberOrdem(Ordem ordem) {
+        DatabaseManager.gravarOrdem(ordem);
         ordens.enqueue(ordem);
     }
 

@@ -1,5 +1,6 @@
 package ativos;
 
+import database.DatabaseManager;
 import estruturasdedados.Pilha;
 
 public class Historico {
@@ -11,6 +12,7 @@ public class Historico {
 
     public void addRegistro(Registro registro) {
         registros.push(registro);
+        DatabaseManager.gravarRegistro(registro);
     }
 
     public Pilha<Registro> getRegistros() {

@@ -11,6 +11,7 @@ public abstract class Ordem {
     private double preco;
     private int quantidade;
     private LocalDateTime dataEmissao;
+    private String tipo;
 
     public Ordem(Ativo ativo, Investidor investidor, double preco, int quantidade) {
         this.ativo = ativo;
@@ -18,6 +19,16 @@ public abstract class Ordem {
         this.preco = preco;
         this.quantidade = quantidade;
         this.dataEmissao = LocalDateTime.now();
+        setTipo();
+    }
+
+    public Ordem(Ativo ativo, Investidor investidor, double preco, int quantidade, LocalDateTime data) {
+        this.ativo = ativo;
+        this.investidor = investidor;
+        this.preco = preco;
+        this.quantidade = quantidade;
+        this.dataEmissao = data;
+        setTipo();
     }
 
     public Ativo getAtivo() {
@@ -42,5 +53,17 @@ public abstract class Ordem {
 
     public LocalDateTime getDataEmissao() {
         return dataEmissao;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo() {
+        if(this instanceof OrdemCompra) {
+            tipo = "Compra";
+        } else {
+            tipo = "Venda";
+        }
     }
 }

@@ -1,8 +1,12 @@
 package estruturasdedados;
 
 import java.util.Comparator;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.*;
+import java.util.function.Consumer;
 
-public class ArvoreBinaria<T> {
+public class ArvoreBinaria<T> implements Iterable<T> {
     private T valor;
     private ArvoreBinaria<T> esquerda;
     private ArvoreBinaria<T> direita;
@@ -81,6 +85,57 @@ public class ArvoreBinaria<T> {
             return this.valor;
         } else {
             return this.esquerda.menorValor();
+        }
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new ArvoreIterator();
+    }
+
+    private class ArvoreIterator implements Iterator<T> {
+        private Pilha<ArvoreBinaria<T>> pilha;
+
+        public ArvoreIterator() {
+            pilha = new Pilha<>();
+            preencherPilha(ArvoreBinaria.this);
+        }
+
+        private void preencherPilha(ArvoreBinaria<T> no) {
+            while (no != null) {
+                pilha.push(no);
+                no = no.esquerda;
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            return !pilha.isEmpty();
+        }
+
+        @Override
+        public T next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            ArvoreBinaria<T> no = pilha.pop();
+            preencherPilha(no.direita);
+            return no.valor;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void forEachRemaining(Consumer<? super T> action) {
+            Objects.requireNonNull(action);
+            while (!pilha.isEmpty()) {
+                ArvoreBinaria<T> no = pilha.pop();
+                action.accept(no.valor);
+                preencherPilha(no.direita);
+            }
         }
     }
 }

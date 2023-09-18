@@ -1,11 +1,16 @@
 package entities;
 
+import ativos.Ativo;
+import database.DatabaseManager;
+import estruturasdedados.LinkedList;
+
 public class Empresa {
     private final int id;
     private String nome;
     private String simbolo;
     private double capitalizacao;
     private String setor;
+    private LinkedList<Ativo> ativos;
 
     public Empresa(int id, String nome, String simbolo, double capitalizacao, String setor) {
         this.id = id;
@@ -13,6 +18,11 @@ public class Empresa {
         this.simbolo = simbolo;
         this.capitalizacao = capitalizacao;
         this.setor = setor;
+    }
+
+    public void lancarAtivo(Ativo acao) {
+        ativos.addLast(acao);
+        DatabaseManager.gravarAcao(acao);
     }
 
     public int getId() {

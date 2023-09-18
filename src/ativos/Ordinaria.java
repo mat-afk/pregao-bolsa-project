@@ -4,11 +4,11 @@ import entities.*;
 
 public class Ordinaria extends Ativo {
 
-    public Ordinaria(int id, String nome, String codigo, Empresa empresa, double cotacao) {
-        super(id, nome, codigo, empresa, cotacao);
+    public Ordinaria(int id, String codigo, Empresa empresa, double cotacao) {
+        super(id, codigo, empresa, cotacao);
     }
 
-    public Ordinaria(int id, String nome, String codigo, Empresa empresa) {
-        super(id, nome, codigo, empresa);
+    public Ordinaria(int id, String codigo, Empresa empresa) {
+        super(id, codigo, empresa);
     }
 }

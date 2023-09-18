@@ -46,10 +46,6 @@ public class Investidor {
         throw new IllegalArgumentException("Você não pode vender uma ação que você não possui.");
     }
 
-    public void solicitarVenda(Ativo acao, int quantidade) {
-        solicitarVenda(acao, 0.0, quantidade);
-    }
-
     public int getId() {
         return id;
     }
@@ -83,5 +79,9 @@ public class Investidor {
 
     public void setCarteira(Carteira carteira) {
         this.carteira = carteira;
+    }
+
+    public Corretora getCorretora() {
+        return corretora;
     }
 }

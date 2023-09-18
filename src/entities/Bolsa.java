@@ -1,21 +1,22 @@
 package entities;
 import ativos.Registro;
+import database.DatabaseManager;
 import estruturasdedados.Fila;
 import estruturasdedados.LinkedList;
 import ordens.Ordem;
 import ordens.OrdemCompra;
 import ordens.OrdemVenda;
 
-import java.time.LocalDateTime;
-
 public class Bolsa {
 
+    private String nome;
     private LinkedList<Corretora> corretoras;
     private LinkedList<Empresa> empresas;
     private Fila<Ordem> ordensDeCompra;
     private Fila<Ordem> ordensDeVenda;
 
-    public Bolsa() {
+    public Bolsa(String nome) {
+        this.nome = nome;
         this.corretoras = new LinkedList<>();
         this.empresas = new LinkedList<>();
         this.ordensDeCompra = new Fila<>();
@@ -24,10 +25,12 @@ public class Bolsa {
 
     public void addCorretora(Corretora corretora) {
         corretoras.addLast(corretora);
+        DatabaseManager.gravarCorretora(corretora);
     }
 
     public void addEmpresa(Empresa empresa) {
         empresas.addLast(empresa);
+        DatabaseManager.gravarEmpresa(empresa);
     }
 
     public void processarOrdensDeCompra() {
@@ -64,7 +67,8 @@ public class Bolsa {
 
                         int quantidadeNegociada = Math.min(compra.getQuantidade(), venda.getQuantidade());
 
-                        compra.getAtivo().getHistorico().addRegistro(new Registro(compra.getPreco(), quantidadeNegociada));
+                        venda.getAtivo().getHistorico().addRegistro(new Registro(venda, compra.getPreco(), quantidadeNegociada));
+                        compra.getAtivo().getHistorico().addRegistro(new Registro(compra, compra.getPreco(), quantidadeNegociada));
 
                         venda.getInvestidor().depositar(quantidadeNegociada * compra.getPreco());
                         compra.getInvestidor().descontar(quantidadeNegociada * compra.getPreco());

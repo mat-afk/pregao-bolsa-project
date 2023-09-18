@@ -1,25 +1,28 @@
 package entities;
 
 import ativos.Ativo;
+import estruturasdedados.ArvoreBinaria;
 import estruturasdedados.LinkedList;
+
+import java.util.Comparator;
 
 public class Carteira {
 
-    private LinkedList<Ativo> ativos;
+    private final ArvoreBinaria<Ativo> ativos;
 
     public Carteira() {
-        this.ativos = new LinkedList<>();
+        this.ativos = new ArvoreBinaria<>(null, (o1, o2) -> (int) (o1.getCotacao() - o2.getCotacao()));
     }
 
     public void addAtivo(Ativo ativo) {
-        ativos.addLast(ativo);
+        ativos.add(ativo);
     }
 
     public void removerAtivo(Ativo ativo) {
-        ativos.remove(ativo);
+        ativos.remover(ativo);
     }
 
-    public LinkedList<Ativo> getAtivos() {
+    public ArvoreBinaria<Ativo> getAtivos() {
         return ativos;
     }
 
