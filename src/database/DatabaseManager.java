@@ -79,7 +79,7 @@ public class DatabaseManager {
             String precoFormat = String.format("%-15s", registro.getPreco());
             String volumeFormat = String.format("%-10s", registro.getVolume());
 
-            arquivo.println(dataFormat + precoFormat + volumeFormat);
+            arquivo.println(dataFormat + ordemFormat + ativoFormat + precoFormat + volumeFormat);
         } catch (IOException e) {
             e.printStackTrace();
         }

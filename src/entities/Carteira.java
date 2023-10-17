@@ -2,9 +2,6 @@ package entities;
 
 import ativos.Ativo;
 import estruturasdedados.ArvoreBinaria;
-import estruturasdedados.LinkedList;
-
-import java.util.Comparator;
 
 public class Carteira {
 

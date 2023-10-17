@@ -96,4 +96,24 @@ public class Bolsa {
             }
         }
     }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public LinkedList<Corretora> getCorretoras() {
+        return corretoras;
+    }
+
+    public LinkedList<Empresa> getEmpresas() {
+        return empresas;
+    }
+
+    public Fila<Ordem> getOrdensDeCompra() {
+        return ordensDeCompra;
+    }
+
+    public Fila<Ordem> getOrdensDeVenda() {
+        return ordensDeVenda;
+    }
 }

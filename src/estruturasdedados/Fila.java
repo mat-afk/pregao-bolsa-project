@@ -45,7 +45,6 @@ public class Fila<T> implements Iterable<T> {
         if (isEmpty()) {
             throw new IllegalArgumentException("Fila vazia");
         }
-        T data = head.data;
         head = head.next;
         size--;
         if (isEmpty()) {
