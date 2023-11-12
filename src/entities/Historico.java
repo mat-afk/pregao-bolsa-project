@@ -1,4 +1,4 @@
-package ativos;
+package entities;
 
 import database.DatabaseManager;
 import estruturasdedados.Pilha;

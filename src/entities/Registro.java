@@ -1,12 +1,12 @@
-package ativos;
+package entities;
 
-import ordens.Ordem;
+import entities.ordens.Ordem;
 
 import java.time.LocalDateTime;
 
 public class Registro {
     private LocalDateTime data;
-    private Ordem ordem;
+    private final Ordem ordem;
     private double preco;
     private int volume;
 

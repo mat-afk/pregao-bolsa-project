@@ -1,6 +1,6 @@
-package ordens;
+package entities.ordens;
 
-import ativos.Ativo;
+import entities.ativos.Ativo;
 import entities.Investidor;
 
 import java.time.LocalDateTime;
