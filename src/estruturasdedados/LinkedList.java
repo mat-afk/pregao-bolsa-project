@@ -22,6 +22,14 @@ public class LinkedList<T> implements Iterable<T> {
         this.size = 0;
     }
 
+    public int size() {
+        return size;
+    }
+
+    public boolean isEmpty() {
+        return head == null;
+    }
+
     public void add(T data, int index) {
         Node<T> newNode = new Node<>(data);
         if(index < 0 || index > size) {
@@ -139,10 +147,6 @@ public class LinkedList<T> implements Iterable<T> {
             current = current.next;
         }
         return current.data;
-    }
-
-    public int size() {
-        return size;
     }
 
     @Override

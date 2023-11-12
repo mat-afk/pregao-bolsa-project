@@ -25,4 +25,10 @@ public class FII extends Ativo {
         final String NUMERO_DE_ACAO = "11";
         return getEmpresa().getSimbolo() + NUMERO_DE_ACAO;
     }
+
+    @Override
+    public String formatToSave() {
+        return String.format("%-5s%-10s%-30s%-15s%-15s",
+                getId(), getSimbolo(), getEmpresa().getNome(), getCotacao(), getNatureza());
+    }
 }

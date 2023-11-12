@@ -1,6 +1,6 @@
 package entities;
 
-import ativos.Ativo;
+import entities.ativos.Ativo;
 import estruturasdedados.ArvoreBinaria;
 
 public class Carteira {

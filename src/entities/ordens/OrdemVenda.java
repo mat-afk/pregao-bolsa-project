@@ -7,11 +7,19 @@ import java.time.LocalDateTime;
 
 public class OrdemVenda extends Ordem {
 
-    public OrdemVenda(Ativo ativo, Investidor investidor, double preco, int quantidade) {
-        super(ativo, investidor, preco, quantidade);
+    public OrdemVenda(int id, Ativo ativo, Investidor investidor, double preco, int quantidade, LocalDateTime dataEmissao) {
+        super(id, ativo, investidor, preco, quantidade, TipoOrdem.VENDA, dataEmissao);
     }
 
-    public OrdemVenda(Ativo ativo, Investidor investidor, double preco, int quantidade, LocalDateTime data) {
-        super(ativo, investidor, preco, quantidade, data);
+    public OrdemVenda(int id, Ativo ativo, Investidor investidor, double preco, int quantidade) {
+        super(id, ativo, investidor, preco, quantidade, TipoOrdem.VENDA);
+    }
+
+    public OrdemVenda(Ativo ativo, Investidor investidor, double preco, int quantidade, LocalDateTime dataEmissao) {
+        super(ativo, investidor, preco, quantidade, TipoOrdem.VENDA, dataEmissao);
+    }
+
+    public OrdemVenda(Ativo ativo, Investidor investidor, double preco, int quantidade) {
+        super(ativo, investidor, preco, quantidade, TipoOrdem.VENDA);
     }
 }

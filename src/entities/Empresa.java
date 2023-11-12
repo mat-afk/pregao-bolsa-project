@@ -1,10 +1,11 @@
 package entities;
 
-import ativos.Ativo;
-import database.DatabaseManager;
+import dao.AtivoDAO;
+import entities.ativos.Ativo;
 import estruturasdedados.LinkedList;
 
 public class Empresa {
+    private static int count = 0;
     private final int id;
     private String nome;
     private String simbolo;
@@ -20,9 +21,13 @@ public class Empresa {
         this.setor = setor;
     }
 
+    public Empresa(String nome, String simbolo, double capitalizacao, String setor) {
+        this(++count, nome, simbolo, capitalizacao, setor);
+    }
+
     public void lancarAtivo(Ativo acao) {
         ativos.addLast(acao);
-        DatabaseManager.gravarAcao(acao);
+        AtivoDAO.save(acao);
     }
 
     public int getId() {
@@ -59,5 +64,10 @@ public class Empresa {
 
     public void setSetor(String setor) {
         this.setor = setor;
+    }
+
+    public String formatToSave() {
+        return String.format("%-5s%-30s%-10s%-15s%-20s",
+                getId(), getNome(), getSimbolo(), getCapitalizacao(), getSetor());
     }
 }

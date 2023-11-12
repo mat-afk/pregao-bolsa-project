@@ -1,11 +1,12 @@
 package entities;
 
-import ativos.Ativo;
+import entities.ativos.Ativo;
 import main.Validador;
-import ordens.*;
+import entities.ordens.*;
 
 public class Investidor {
 
+    private static int count = 0;
     private final int id;
     private final String nome;
     private String cpf;
@@ -24,6 +25,14 @@ public class Investidor {
 
     public Investidor(int id, String nome, String cpf, Corretora corretora) {
         this(id, nome, cpf, 0.0, corretora);
+    }
+
+    public Investidor(String nome, String cpf, double valor, Corretora corretora) {
+        this(++count, nome, cpf, valor, corretora);
+    }
+
+    public Investidor(String nome, String cpf, Corretora corretora) {
+        this(nome, cpf, 0.0, corretora);
     }
 
     public void depositar(double valor) {
@@ -83,5 +92,10 @@ public class Investidor {
 
     public Corretora getCorretora() {
         return corretora;
+    }
+
+    public String formatToSave() {
+        return String.format("%-5s%-30s%-15s%-15s%-30s",
+                getId(), getNome(), getCpf(), getSaldo(), getCorretora().getNome());
     }
 }

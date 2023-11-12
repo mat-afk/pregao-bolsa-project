@@ -14,32 +14,6 @@ public abstract class Ativo {
     private final Historico historico;
     private final Natureza natureza;
 
-    public Ativo(Empresa empresa, Natureza natureza, double cotacao) {
-        this.id = ++count;
-        setSimbolo(generateSimbolo());
-        this.empresa = empresa;
-        this.natureza = natureza;
-        this.cotacao = cotacao;
-        this.historico = new Historico();
-    }
-
-    public Ativo(Empresa empresa, Natureza natureza) {
-        this(empresa, natureza, 0.0);
-    }
-
-    public Ativo(String simbolo, Empresa empresa, Natureza natureza, double cotacao) {
-        this.id = ++count;
-        setSimbolo(simbolo);
-        this.empresa = empresa;
-        this.natureza = natureza;
-        this.cotacao = cotacao;
-        this.historico = new Historico();
-    }
-
-    public Ativo(String simbolo, Empresa empresa, Natureza natureza) {
-        this(simbolo, empresa, natureza, 0.0);
-    }
-
     public Ativo(int id, String simbolo, Empresa empresa, Natureza natureza, double cotacao) {
         this.id = id;
         setSimbolo(simbolo);
@@ -52,6 +26,29 @@ public abstract class Ativo {
     public Ativo(int id, String simbolo, Empresa empresa, Natureza natureza) {
         this(id, simbolo, empresa, natureza, 0.0);
     }
+
+    public Ativo(Empresa empresa, Natureza natureza, double cotacao) {
+        this.id = ++count;
+        this.empresa = empresa;
+        setSimbolo(generateSimbolo());
+        this.natureza = natureza;
+        this.cotacao = cotacao;
+        this.historico = new Historico();
+    }
+
+    public Ativo(Empresa empresa, Natureza natureza) {
+        this(empresa, natureza, 0.0);
+    }
+
+    public Ativo(String simbolo, Empresa empresa, Natureza natureza, double cotacao) {
+        this(++count, simbolo, empresa, natureza, 0.0);
+    }
+
+    public Ativo(String simbolo, Empresa empresa, Natureza natureza) {
+        this(simbolo, empresa, natureza, 0.0);
+    }
+
+    public abstract String formatToSave();
 
     public static int getCount() {
         return count;

@@ -1,6 +1,6 @@
 package entities;
 
-import database.DatabaseManager;
+import dao.RegistroDAO;
 import estruturasdedados.Pilha;
 
 public class Historico {
@@ -12,10 +12,14 @@ public class Historico {
 
     public void addRegistro(Registro registro) {
         registros.push(registro);
-        DatabaseManager.gravarRegistro(registro);
+        RegistroDAO.save(registro);
     }
 
     public Pilha<Registro> getRegistros() {
         return registros;
+    }
+
+    public void setRegistros(Pilha<Registro> registros) {
+        this.registros = registros;
     }
 }

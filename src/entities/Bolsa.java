@@ -1,11 +1,12 @@
 package entities;
-import ativos.Registro;
-import database.DatabaseManager;
+import dao.CorretoraDAO;
+import dao.EmpresaDAO;
+import dao.RegistroDAO;
 import estruturasdedados.Fila;
 import estruturasdedados.LinkedList;
-import ordens.Ordem;
-import ordens.OrdemCompra;
-import ordens.OrdemVenda;
+import entities.ordens.Ordem;
+import entities.ordens.OrdemCompra;
+import entities.ordens.OrdemVenda;
 
 public class Bolsa {
 
@@ -25,12 +26,12 @@ public class Bolsa {
 
     public void addCorretora(Corretora corretora) {
         corretoras.addLast(corretora);
-        DatabaseManager.gravarCorretora(corretora);
+        CorretoraDAO.save(corretora);
     }
 
     public void addEmpresa(Empresa empresa) {
         empresas.addLast(empresa);
-        DatabaseManager.gravarEmpresa(empresa);
+        EmpresaDAO.save(empresa);
     }
 
     public void processarOrdensDeCompra() {
@@ -67,13 +68,10 @@ public class Bolsa {
 
                         int quantidadeNegociada = Math.min(compra.getQuantidade(), venda.getQuantidade());
 
-                        Registro r1 = new Registro(venda, compra.getPreco(), quantidadeNegociada);
-                        venda.getAtivo().getHistorico().addRegistro(r1);
-                        DatabaseManager.gravarRegistro(r1);
-
-                        Registro r2 = new Registro(compra, compra.getPreco(), quantidadeNegociada);
-                        compra.getAtivo().getHistorico().addRegistro(r2);
-                        DatabaseManager.gravarRegistro(r2);
+                        Registro registro = new Registro(compra.getAtivo(), (OrdemVenda) venda, (OrdemCompra) compra, compra.getPreco(), quantidadeNegociada);
+                        venda.getAtivo().getHistorico().addRegistro(registro);
+                        compra.getAtivo().getHistorico().addRegistro(registro);
+                        RegistroDAO.save(registro);
 
                         venda.getInvestidor().depositar(quantidadeNegociada * compra.getPreco());
                         compra.getInvestidor().descontar(quantidadeNegociada * compra.getPreco());

@@ -4,6 +4,14 @@ import entities.*;
 
 public class Preferencial extends Ativo {
 
+    public Preferencial(Empresa empresa, double cotacao) {
+        super(empresa, Natureza.PREFERENCIAL, cotacao);
+    }
+
+    public Preferencial(Empresa empresa) {
+        super(empresa, Natureza.ORDINARIA);
+    }
+
     public Preferencial(String simbolo, Empresa empresa, double cotacao) {
         super(simbolo, empresa, Natureza.PREFERENCIAL, cotacao);
     }
@@ -24,5 +32,11 @@ public class Preferencial extends Ativo {
     public String generateSimbolo() {
         final String NUMERO_DE_ACAO = "4";
         return getEmpresa().getSimbolo() + NUMERO_DE_ACAO;
+    }
+
+    @Override
+    public String formatToSave() {
+        return String.format("%-5s%-10s%-30s%-15s%-15s",
+                getId(), getSimbolo(), getEmpresa().getNome(), getCotacao(), getNatureza());
     }
 }

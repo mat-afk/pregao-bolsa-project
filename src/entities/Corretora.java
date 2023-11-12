@@ -1,18 +1,20 @@
 package entities;
 
-import database.DatabaseManager;
+import dao.InvestidorDAO;
+import dao.OrdemDAO;
 import estruturasdedados.Fila;
 import estruturasdedados.LinkedList;
 import main.Validador;
-import ordens.Ordem;
+import entities.ordens.Ordem;
 
 public class Corretora {
 
+    private static int count = 0;
     private int id;
     private String nome;
     private String cnpj;
-    private LinkedList<Investidor> clientes;
-    private Fila<Ordem> ordens;
+    private final LinkedList<Investidor> clientes;
+    private final Fila<Ordem> ordens;
 
     public Corretora(int id, String nome, String cnpj) {
         this.id = id;
@@ -22,9 +24,13 @@ public class Corretora {
         this.ordens = new Fila<>();
     }
 
+    public Corretora(String nome, String cnpj) {
+        this(++count, nome, cnpj);
+    }
+
     public void addCliente(Investidor cliente) {
         clientes.addLast(cliente);
-        DatabaseManager.gravarInvestidor(cliente);
+        InvestidorDAO.save(cliente);
     }
 
     public void removerCliente(Investidor cliente) {
@@ -32,7 +38,7 @@ public class Corretora {
     }
 
     public void receberOrdem(Ordem ordem) {
-        DatabaseManager.gravarOrdem(ordem);
+        OrdemDAO.save(ordem);
         ordens.enqueue(ordem);
     }
 
@@ -69,5 +75,10 @@ public class Corretora {
 
     public Fila<Ordem> getOrdens() {
         return ordens;
+    }
+
+    public String formatToSave() {
+        return String.format("%-5s%-30s%-20s",
+                getId(), getNome(), getCnpj());
     }
 }
