@@ -73,7 +73,7 @@ public class Registro {
     }
 
     public String formatToSave() {
-        return String.format("%-5s%-5s%-5s%-20s%-10s%-15s%-7s",
+        return String.format("%-5s%-5s%-5s%-30s%-10s%-15s%-7s",
                 getId(), getOrdemVenda().getId(), ordemCompra.getId(), getData(), getAtivo().getSimbolo(), getPrecoNegociado(), getVolume());
     }
 }

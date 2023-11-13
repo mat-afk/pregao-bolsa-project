@@ -1,6 +1,6 @@
 package dao;
 
-import entities.Investidor;
+import entities.InvestidorFisico;
 import entities.ativos.Ativo;
 import entities.ordens.Ordem;
 import entities.ordens.OrdemCompra;
@@ -42,7 +42,7 @@ public class OrdemDAO {
         return null;
     }
 
-    public static @Nullable LinkedList<Ordem> findByInvestidor(Investidor investidor) {
+    public static @Nullable LinkedList<Ordem> findByInvestidor(InvestidorFisico investidor) {
         LinkedList<Ordem> ordens = new LinkedList<>();
         try (BufferedReader arquivo = new BufferedReader(new FileReader(FILE_PATH))) {
             String linha;
@@ -112,7 +112,7 @@ public class OrdemDAO {
             int ordemId = Integer.parseInt(idStr);
             double preco = Double.parseDouble(precoStr);
             int quantidade = Integer.parseInt(quantidadeStr);
-            Investidor investidor = InvestidorDAO.findByCpf(cpfInvestidor);
+            InvestidorFisico investidor = InvestidorDAO.findByCpf(cpfInvestidor);
 
             Ativo ativo = AtivoDAO.findBySimbolo(simbolo);
 

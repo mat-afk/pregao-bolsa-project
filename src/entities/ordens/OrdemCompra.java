@@ -1,7 +1,8 @@
 package entities.ordens;
 
-import entities.ativos.Ativo;
 import entities.Investidor;
+import entities.ativos.Ativo;
+import entities.InvestidorFisico;
 
 import java.time.LocalDateTime;
 

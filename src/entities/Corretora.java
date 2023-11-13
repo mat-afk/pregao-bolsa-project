@@ -13,7 +13,7 @@ public class Corretora {
     private int id;
     private String nome;
     private String cnpj;
-    private final LinkedList<Investidor> clientes;
+    private final LinkedList<InvestidorFisico> clientes;
     private final Fila<Ordem> ordens;
 
     public Corretora(int id, String nome, String cnpj) {
@@ -28,12 +28,12 @@ public class Corretora {
         this(++count, nome, cnpj);
     }
 
-    public void addCliente(Investidor cliente) {
+    public void addCliente(InvestidorFisico cliente) {
         clientes.addLast(cliente);
         InvestidorDAO.save(cliente);
     }
 
-    public void removerCliente(Investidor cliente) {
+    public void removerCliente(InvestidorFisico cliente) {
         clientes.remove(cliente);
     }
 
@@ -69,7 +69,7 @@ public class Corretora {
         this.cnpj = cnpj;
     }
 
-    public LinkedList<Investidor> getClientes() {
+    public LinkedList<InvestidorFisico> getClientes() {
         return clientes;
     }
 

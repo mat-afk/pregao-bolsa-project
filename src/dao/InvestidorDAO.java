@@ -1,7 +1,8 @@
 package dao;
 
 import entities.Corretora;
-import entities.Investidor;
+import entities.InvestidorFisico;
+import estruturasdedados.LinkedList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,7 +12,7 @@ public class InvestidorDAO {
 
     private static final String FILE_PATH = "database/investidores.txt";
 
-    public static void save(@NotNull Investidor investidor) {
+    public static void save(@NotNull InvestidorFisico investidor) {
 
         try (PrintWriter arquivo = new PrintWriter(new FileWriter(FILE_PATH, true))) {
             arquivo.println(investidor.formatToSave());
@@ -20,12 +21,39 @@ public class InvestidorDAO {
         }
     }
 
-    public static @Nullable Investidor findById(int id) {
+    public static void update(@NotNull InvestidorFisico investidor) {
+        LinkedList<String> linhas = new LinkedList<>();
+
+        try (BufferedReader arquivo = new BufferedReader(new FileReader(FILE_PATH))) {
+            String linha;
+            while ((linha = arquivo.readLine()) != null) {
+                InvestidorFisico investidorExistente = resultSetToInvestidor(linha);
+
+                if (investidorExistente != null && investidorExistente.getId() == investidor.getId()) {
+                    linhas.addLast(investidor.formatToSave());
+                } else {
+                    linhas.addLast(linha);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try (PrintWriter arquivo = new PrintWriter(new FileWriter(FILE_PATH))) {
+            for (String linhaAtualizada : linhas) {
+                arquivo.println(linhaAtualizada);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static @Nullable InvestidorFisico findById(int id) {
 
         try (BufferedReader arquivo = new BufferedReader(new FileReader(FILE_PATH))) {
             String linha;
             while((linha = arquivo.readLine()) != null) {
-                Investidor investidor = resultSetToInvestidor(linha);
+                InvestidorFisico investidor = resultSetToInvestidor(linha);
                 if (investidor != null && investidor.getId() == id) {
                     return investidor;
                 }
@@ -37,12 +65,12 @@ public class InvestidorDAO {
         return null;
     }
 
-    public static @Nullable Investidor findByName(String nome) {
+    public static @Nullable InvestidorFisico findByName(String nome) {
 
         try (BufferedReader arquivo = new BufferedReader(new FileReader(FILE_PATH))) {
             String linha;
             while((linha = arquivo.readLine()) != null) {
-                Investidor investidor = resultSetToInvestidor(linha);
+                InvestidorFisico investidor = resultSetToInvestidor(linha);
                 if (investidor != null && investidor.getNome().equals(nome)) {
                     return investidor;
                 }
@@ -54,12 +82,12 @@ public class InvestidorDAO {
         return null;
     }
 
-    public static @Nullable Investidor findByCpf(String cpf) {
+    public static @Nullable InvestidorFisico findByCpf(String cpf) {
 
         try (BufferedReader arquivo = new BufferedReader(new FileReader(FILE_PATH))) {
             String linha;
             while((linha = arquivo.readLine()) != null) {
-                Investidor investidor = resultSetToInvestidor(linha);
+                InvestidorFisico investidor = resultSetToInvestidor(linha);
                 if (investidor != null && investidor.getCpf().equals(cpf)) {
                     return investidor;
                 }
@@ -71,20 +99,20 @@ public class InvestidorDAO {
         return null;
     }
 
-    public static @Nullable Investidor resultSetToInvestidor(@NotNull String linha) {
+    public static @Nullable InvestidorFisico resultSetToInvestidor(@NotNull String linha) {
         try {
             String idStr = linha.substring(0, 5).trim();
             String nome = linha.substring(5, 35).trim();
-            String cpf = linha.substring(35, 50).trim();
-            String saldoStr = linha.substring(50, 65).trim();
-            String corretoraNome = linha.substring(65, 95).trim();
+            String cpf = linha.substring(35, 55).trim();
+            String saldoStr = linha.substring(55, 70).trim();
+            String corretoraNome = linha.substring(70, 100).trim();
 
             int investidorId = Integer.parseInt(idStr);
             double saldo = Double.parseDouble(saldoStr);
 
             Corretora corretora = CorretoraDAO.findByName(corretoraNome);
 
-            return new Investidor(investidorId, nome, cpf, saldo, corretora);
+            return new InvestidorFisico(investidorId, nome, cpf, saldo, corretora);
         } catch (NumberFormatException e) {
             e.printStackTrace();
             return null;

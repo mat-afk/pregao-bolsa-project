@@ -67,10 +67,10 @@ public class RegistroDAO {
             String idStr = linha.substring(0, 5).trim();
             String idOrdemVendaStr = linha.substring(5, 10).trim();
             String idOrdemCompraStr = linha.substring(10, 15).trim();
-            String dataStr = linha.substring(15, 35).trim();
-            String simboloAtivo = linha.substring(35, 45).trim();
-            String precoNegociadoStr = linha.substring(45, 60).trim();
-            String volumeStr = linha.substring(60, 67).trim();
+            String dataStr = linha.substring(15, 45).trim();
+            String simboloAtivo = linha.substring(45, 55).trim();
+            String precoNegociadoStr = linha.substring(55, 70).trim();
+            String volumeStr = linha.substring(70, 77).trim();
 
             int registroId = Integer.parseInt(idStr);
             int idOrdemVenda = Integer.parseInt(idOrdemVendaStr);

@@ -95,4 +95,16 @@ public abstract class Ativo {
     public Natureza getNatureza() {
         return natureza;
     }
+
+    @Override
+    public String toString() {
+        return "Ativo{" +
+                "id=" + id +
+                ", simbolo='" + simbolo + '\'' +
+                ", empresa=" + empresa +
+                ", cotacao=" + cotacao +
+                ", historico=" + historico +
+                ", natureza=" + natureza +
+                '}';
+    }
 }

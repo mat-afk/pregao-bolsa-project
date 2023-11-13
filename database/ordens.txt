@@ -1,0 +1,4 @@
+1    GOOG3     Google LLC                    null           100.72         100  VENDA     2023-11-12T21:41:03.196639200
+2    PETR3     Petrobrás                     null           80.9           100  VENDA     2023-11-12T21:41:03.200638400
+3    AMZN4     Amazon                        null           157.34         100  VENDA     2023-11-12T21:41:03.202637800
+4    PETR3     Domingos Latorre              004.572.878-02 82.5           2    COMPRA    2023-11-12T21:41:03.213633800

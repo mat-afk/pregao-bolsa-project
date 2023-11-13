@@ -1,18 +1,3 @@
-1    Google LLC                    GOOG      2.0E9          Tecnologia          
-2    Petrobrás                     PETR      1.0E9          Petróleo            
-3    Amazon                        AMZN      3.0E7          Tecnologia          
-1    Google LLC                    GOOG      2.0E9          Tecnologia          
-2    Petrobrás                     PETR      1.0E9          Petróleo            
-3    Amazon                        AMZN      3.0E7          Tecnologia          
-1    Google LLC                    GOOG      2.0E9          Tecnologia          
-2    Petrobrás                     PETR      1.0E9          Petróleo            
-3    Amazon                        AMZN      3.0E7          Tecnologia          
-1    Google LLC                    GOOG      2.0E9          Tecnologia          
-2    Petrobrás                     PETR      1.0E9          Petróleo            
-3    Amazon                        AMZN      3.0E7          Tecnologia          
-1    Google LLC                    GOOG      2.0E9          Tecnologia          
-2    Petrobrás                     PETR      1.0E9          Petróleo            
-3    Amazon                        AMZN      3.0E7          Tecnologia          
-1    Google LLC                    GOOG      2.0E9          Tecnologia          
-2    Petrobrás                     PETR      1.0E9          Petróleo            
-3    Amazon                        AMZN      3.0E7          Tecnologia          
+1    Google LLC                    GOOG      2.0E9               Tecnologia          
+2    Petrobrás                     PETR      1.0E9               Petróleo            
+3    Amazon                        AMZN      3.0E7               Tecnologia          

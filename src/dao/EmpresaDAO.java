@@ -1,6 +1,7 @@
 package dao;
 
 import entities.Empresa;
+import estruturasdedados.LinkedList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,6 +14,33 @@ public class EmpresaDAO {
     public static void save(@NotNull Empresa empresa) {
         try (PrintWriter arquivo = new PrintWriter(new FileWriter(FILE_PATH, true))) {
             arquivo.println(empresa.formatToSave());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void update(@NotNull Empresa empresa) {
+        LinkedList<String> linhas = new LinkedList<>();
+
+        try (BufferedReader arquivo = new BufferedReader(new FileReader(FILE_PATH))) {
+            String linha;
+            while ((linha = arquivo.readLine()) != null) {
+                Empresa empresaExistente = resultSetToEmpresa(linha);
+
+                if (empresaExistente != null && empresaExistente.getId() == empresa.getId()) {
+                    linhas.addLast(empresa.formatToSave());
+                } else {
+                    linhas.addLast(linha);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try (PrintWriter arquivo = new PrintWriter(new FileWriter(FILE_PATH))) {
+            for (String linhaAtualizada : linhas) {
+                arquivo.println(linhaAtualizada);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,8 +85,8 @@ public class EmpresaDAO {
             String idStr = linha.substring(0, 5).trim();
             String nome = linha.substring(5, 35).trim();
             String simbolo = linha.substring(35, 45).trim();
-            String capitalizacaoStr = linha.substring(45, 60).trim();
-            String setor = linha.substring(60, 80).trim();
+            String capitalizacaoStr = linha.substring(45, 65).trim();
+            String setor = linha.substring(65, 85).trim();
 
             int empresaId = Integer.parseInt(idStr);
             double capitalizacao = Double.parseDouble(capitalizacaoStr);

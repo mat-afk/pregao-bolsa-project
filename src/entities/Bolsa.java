@@ -31,6 +31,7 @@ public class Bolsa {
 
     public void addEmpresa(Empresa empresa) {
         empresas.addLast(empresa);
+        empresa.setBolsa(this);
         EmpresaDAO.save(empresa);
     }
 
@@ -38,7 +39,7 @@ public class Bolsa {
         for(Corretora corretora : corretoras) {
             for(Ordem ordem : corretora.getOrdens()) {
                 if(ordem instanceof OrdemCompra) {
-                    ordensDeVenda.enqueue(ordem);
+                    ordensDeCompra.enqueue(ordem);
                     executarOrdens();
                 }
             }
@@ -56,6 +57,11 @@ public class Bolsa {
         }
     }
 
+    public void processarOrdens() {
+        processarOrdensDeVenda();
+        processarOrdensDeCompra();
+    }
+
     private void executarOrdens() {
         boolean correspondenciaEncontrada = true;
 
@@ -64,34 +70,53 @@ public class Bolsa {
 
             for (Ordem compra : ordensDeCompra) {
                 for (Ordem venda : ordensDeVenda) {
-                    if (compra.getAtivo().equals(venda.getAtivo()) && compra.getPreco() >= venda.getPreco()) {
-
+                    if (encontrarCorrespondencia(compra, venda)) {
                         int quantidadeNegociada = Math.min(compra.getQuantidade(), venda.getQuantidade());
 
-                        Registro registro = new Registro(compra.getAtivo(), (OrdemVenda) venda, (OrdemCompra) compra, compra.getPreco(), quantidadeNegociada);
-                        venda.getAtivo().getHistorico().addRegistro(registro);
-                        compra.getAtivo().getHistorico().addRegistro(registro);
+                        Registro registro = criarRegistro(compra, venda, quantidadeNegociada);
+                        atualizarCarteirasEHistoricos(compra, venda, quantidadeNegociada, registro);
+
                         RegistroDAO.save(registro);
-
-                        venda.getInvestidor().depositar(quantidadeNegociada * compra.getPreco());
-                        compra.getInvestidor().descontar(quantidadeNegociada * compra.getPreco());
-
-                        compra.setQuantidade(compra.getQuantidade() - quantidadeNegociada);
-                        venda.setQuantidade(venda.getQuantidade() - quantidadeNegociada);
-
-                        if (compra.getQuantidade() == 0) {
-                            ordensDeCompra.dequeue();
-                            compra.getInvestidor().getCarteira().addAtivo(compra.getAtivo());
-                        }
-                        if (venda.getQuantidade() == 0) {
-                            ordensDeVenda.dequeue();
-                            venda.getInvestidor().getCarteira().removerAtivo(venda.getAtivo());
-                        }
 
                         correspondenciaEncontrada = true;
                     }
                 }
             }
+        }
+    }
+
+
+    private boolean encontrarCorrespondencia(Ordem compra, Ordem venda) {
+        return compra.getAtivo().equals(venda.getAtivo()) && compra.getPreco() >= venda.getPreco();
+    }
+
+    private Registro criarRegistro(Ordem compra, Ordem venda, int quantidadeNegociada) {
+        return new Registro(
+                compra.getAtivo(),
+                (OrdemVenda) venda,
+                (OrdemCompra) compra,
+                compra.getPreco(),
+                quantidadeNegociada
+        );
+    }
+
+    private void atualizarCarteirasEHistoricos(Ordem compra, Ordem venda, int quantidadeNegociada, Registro registro) {
+        compra.getAtivo().getHistorico().addRegistro(registro);
+        venda.getAtivo().getHistorico().addRegistro(registro);
+
+        venda.getInvestidor().depositar(quantidadeNegociada * compra.getPreco());
+        compra.getInvestidor().descontar(quantidadeNegociada * compra.getPreco());
+
+        compra.setQuantidade(compra.getQuantidade() - quantidadeNegociada);
+        venda.setQuantidade(venda.getQuantidade() - quantidadeNegociada);
+
+        if (compra.getQuantidade() == 0) {
+            ordensDeCompra.dequeue();
+            compra.getInvestidor().getCarteira().addAtivo(compra.getAtivo());
+        }
+        if (venda.getQuantidade() == 0) {
+            ordensDeVenda.dequeue();
+            venda.getInvestidor().getCarteira().removerAtivo(venda.getAtivo());
         }
     }
 

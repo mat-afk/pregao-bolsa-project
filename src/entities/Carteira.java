@@ -2,24 +2,25 @@ package entities;
 
 import entities.ativos.Ativo;
 import estruturasdedados.ArvoreBinaria;
+import estruturasdedados.LinkedList;
 
 public class Carteira {
 
-    private final ArvoreBinaria<Ativo> ativos;
+    private final LinkedList<Ativo> ativos;
 
     public Carteira() {
-        this.ativos = new ArvoreBinaria<>(null, (o1, o2) -> (int) (o1.getCotacao() - o2.getCotacao()));
+        this.ativos = new LinkedList<>();
     }
 
     public void addAtivo(Ativo ativo) {
-        ativos.add(ativo);
+        ativos.addLast(ativo);
     }
 
     public void removerAtivo(Ativo ativo) {
-        ativos.remover(ativo);
+        ativos.remove(ativo);
     }
 
-    public ArvoreBinaria<Ativo> getAtivos() {
+    public LinkedList<Ativo> getAtivos() {
         return ativos;
     }
 
@@ -33,10 +34,24 @@ public class Carteira {
 
     public boolean ativoInCarteira(Ativo acao) {
         for(Ativo ativo : ativos) {
-            if(ativo.equals(acao)) {
+            if(ativo != null && ativo == acao) {
                 return true;
             }
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Carteira{ ativos=");
+
+        for(Ativo ativo : ativos) {
+            sb.append(ativo.toString());
+        }
+
+        sb.append("}");
+
+        return sb.toString();
     }
 }

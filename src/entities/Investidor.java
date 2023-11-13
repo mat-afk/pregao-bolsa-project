@@ -1,77 +1,35 @@
 package entities;
 
 import entities.ativos.Ativo;
-import main.Validador;
-import entities.ordens.*;
 
-public class Investidor {
+public abstract class Investidor {
 
-    private static int count = 0;
-    private final int id;
-    private final String nome;
-    private String cpf;
+    private String nome;
     private double saldo;
     private Carteira carteira;
-    private final Corretora corretora;
+    private Corretora corretora;
 
-    public Investidor(int id, String nome, String cpf, double valor, Corretora corretora) {
-        this.id = id;
+    public Investidor(String nome, double saldo, Corretora corretora) {
         this.nome = nome;
-        setCpf(cpf);
-        this.saldo = valor;
-        this.corretora = corretora;
+        this.saldo = saldo;
         this.carteira = new Carteira();
+        this.corretora = corretora;
     }
 
-    public Investidor(int id, String nome, String cpf, Corretora corretora) {
-        this(id, nome, cpf, 0.0, corretora);
-    }
+    public abstract void depositar(double valor);
 
-    public Investidor(String nome, String cpf, double valor, Corretora corretora) {
-        this(++count, nome, cpf, valor, corretora);
-    }
+    public abstract void descontar(double valor);
 
-    public Investidor(String nome, String cpf, Corretora corretora) {
-        this(nome, cpf, 0.0, corretora);
-    }
+    public abstract void solicitarCompra(Ativo acao, double preco, int quantidade);
 
-    public void depositar(double valor) {
-        saldo += valor;
-    }
-
-    public void descontar(double valor) {
-        saldo -= valor;
-    }
-
-    public void solicitarCompra(Ativo acao, double preco, int quantidade) {
-        corretora.receberOrdem(new OrdemCompra(acao, this, preco, quantidade));
-        carteira.addAtivo(acao);
-    }
-
-    public void solicitarVenda(Ativo acao, double preco, int quantidade) {
-        if(carteira.ativoInCarteira(acao)) {
-            corretora.receberOrdem(new OrdemVenda(acao, this, preco, quantidade));
-        }
-        throw new IllegalArgumentException("Você não pode vender uma ação que você não possui.");
-    }
-
-    public int getId() {
-        return id;
-    }
+    public abstract void solicitarVenda(Ativo acao, double preco, int quantidade);
 
     public String getNome() {
         return nome;
     }
 
-    public String getCpf() {
-        return cpf;
-    }
-
-    private void setCpf(String cpf) {
-        if(!cpf.matches("^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$") && !Validador.validarCPF(cpf)) {
-            throw new IllegalArgumentException("CPF inválido");
-        }
-        this.cpf = cpf;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public double getSaldo() {
@@ -94,8 +52,15 @@ public class Investidor {
         return corretora;
     }
 
-    public String formatToSave() {
-        return String.format("%-5s%-30s%-15s%-15s%-30s",
-                getId(), getNome(), getCpf(), getSaldo(), getCorretora().getNome());
+    public void setCorretora(Corretora corretora) {
+        this.corretora = corretora;
+    }
+
+    public String getCpf() {
+        return null;
+    }
+
+    public String getCnpj() {
+        return null;
     }
 }

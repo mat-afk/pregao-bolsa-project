@@ -12,7 +12,6 @@ public class Historico {
 
     public void addRegistro(Registro registro) {
         registros.push(registro);
-        RegistroDAO.save(registro);
     }
 
     public Pilha<Registro> getRegistros() {
