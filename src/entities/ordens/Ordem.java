@@ -3,7 +3,6 @@ package entities.ordens;
 import entities.Empresa;
 import entities.Investidor;
 import entities.ativos.Ativo;
-import entities.InvestidorFisico;
 
 import java.time.LocalDateTime;
 
@@ -106,11 +105,11 @@ public abstract class Ordem {
 
     public String formatToSave() {
         if(investidor instanceof Empresa) {
-            return String.format("%-5s%-10s%-30s%-15s%-15s%-5s%-10s%-20s",
+            return String.format("%-5s%-10s%-30s%-30s%-15s%-5s%-10s%-20s",
                     getId(), getAtivo().getSimbolo(), getInvestidor().getNome(), getInvestidor().getCnpj(), getPreco(), getQuantidade(), getTipo(), getDataEmissao());
         }
 
-        return String.format("%-5s%-10s%-30s%-15s%-15s%-5s%-10s%-20s",
+        return String.format("%-5s%-10s%-30s%-30s%-15s%-5s%-10s%-20s",
                 getId(), getAtivo().getSimbolo(), getInvestidor().getNome(), getInvestidor().getCpf(), getPreco(), getQuantidade(), getTipo(), getDataEmissao());
     }
 

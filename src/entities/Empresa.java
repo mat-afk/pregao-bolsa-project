@@ -1,36 +1,38 @@
 package entities;
 
 import dao.AtivoDAO;
-import dao.EmpresaDAO;
 import entities.ativos.Ativo;
 import entities.ordens.OrdemVenda;
+import main.Validador;
+import org.jetbrains.annotations.NotNull;
 
 public class Empresa extends Investidor {
     private static int count = 0;
     private final int id;
+    private String cnpj;
     private String simbolo;
     private double capitalizacao;
     private String setor;
-    private Bolsa bolsa;
 
-    public Empresa(int id, String nome, String simbolo, double capitalizacao, String setor, Corretora corretora) {
-        super(nome, capitalizacao, corretora);
+    public Empresa(int id, String nome, String cnpj, String simbolo, double capitalizacao, String setor, Corretora corretora, Bolsa bolsa) {
+        super(nome, capitalizacao, corretora, bolsa);
         this.id = id;
+        setCnpj(cnpj);
         this.simbolo = simbolo;
         this.capitalizacao = capitalizacao;
         this.setor = setor;
     }
 
-    public Empresa(int id, String nome, String simbolo, double capitalizacao, String setor) {
-        this(id, nome, simbolo, capitalizacao, setor, null);
+    public Empresa(int id, String nome, String cnpj, String simbolo, double capitalizacao, String setor, Bolsa bolsa) {
+        this(id, nome, cnpj, simbolo, capitalizacao, setor, null, bolsa);
     }
 
-    public Empresa(String nome, String simbolo, double capitalizacao, String setor, Corretora corretora) {
-        this(++count, nome, simbolo, capitalizacao, setor);
+    public Empresa(String nome, String cnpj, String simbolo, double capitalizacao, String setor, Corretora corretora, Bolsa bolsa) {
+        this(++count, nome, cnpj, simbolo, capitalizacao, setor, bolsa);
     }
 
-    public Empresa(String nome, String simbolo, double capitalizacao, String setor) {
-        this(++count, nome, simbolo, capitalizacao, setor, null);
+    public Empresa(String nome, String cnpj, String simbolo, double capitalizacao, String setor, Bolsa bolsa) {
+        this(++count, nome, cnpj, simbolo, capitalizacao, setor, null, bolsa);
     }
 
     @Override
@@ -102,15 +104,32 @@ public class Empresa extends Investidor {
     }
 
     public Bolsa getBolsa() {
-        return bolsa;
+        return super.getBolsa();
     }
 
     public void setBolsa(Bolsa bolsa) {
-        this.bolsa = bolsa;
+        super.setBolsa(bolsa);
     }
 
     public void setCorretora(Corretora corretora) {
         super.setCorretora(corretora);
+    }
+
+    @Override
+    public String getCpf() {
+        return null;
+    }
+
+    @Override
+    public String getCnpj() {
+        return cnpj;
+    }
+
+    public void setCnpj(String cnpj) {
+        if(Validador.validarCNPJ(cnpj)) {
+            throw new IllegalArgumentException("CNPJ inválido");
+        }
+        this.cnpj = cnpj;
     }
 
     public Carteira getCarteira() {
@@ -118,7 +137,28 @@ public class Empresa extends Investidor {
     }
 
     public String formatToSave() {
-        return String.format("%-5s%-30s%-10s%-20s%-20s",
-                getId(), getNome(), getSimbolo(), getCapitalizacao(), getSetor());
+        return String.format("%-5s%-30s%-30s%-10s%-20s%-20s",
+                getId(), getNome(), getCnpj(), getSimbolo(), getCapitalizacao(), getSetor());
+    }
+
+    @Override
+    public int compareTo(@NotNull InvestidorFisico otherInvestidor) {
+        return this.getNome().compareTo(otherInvestidor.getNome());
+    }
+
+    @Override
+    public int compareTo(@NotNull Empresa otherEmpresa) {
+        return this.getNome().compareTo(otherEmpresa.getNome());
+    }
+
+    @Override
+    public String toString() {
+        return "Empresa{" +
+                "id=" + id +
+                ", nome='" + getNome() + '\'' +
+                ", simbolo='" + simbolo + '\'' +
+                ", capitalizacao=" + capitalizacao +
+                ", setor='" + setor + '\'' +
+                "}\n";
     }
 }

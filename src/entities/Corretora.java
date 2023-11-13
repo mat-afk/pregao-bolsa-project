@@ -1,5 +1,6 @@
 package entities;
 
+import dao.EmpresaDAO;
 import dao.InvestidorDAO;
 import dao.OrdemDAO;
 import estruturasdedados.Fila;
@@ -13,7 +14,7 @@ public class Corretora {
     private int id;
     private String nome;
     private String cnpj;
-    private final LinkedList<InvestidorFisico> clientes;
+    private final LinkedList<Investidor> clientes;
     private final Fila<Ordem> ordens;
 
     public Corretora(int id, String nome, String cnpj) {
@@ -28,12 +29,17 @@ public class Corretora {
         this(++count, nome, cnpj);
     }
 
-    public void addCliente(InvestidorFisico cliente) {
+    public void addInvestidorFisico(InvestidorFisico cliente) {
         clientes.addLast(cliente);
         InvestidorDAO.save(cliente);
     }
 
-    public void removerCliente(InvestidorFisico cliente) {
+    public void addIEmpresa(Empresa empresa) {
+        clientes.addLast(empresa);
+        EmpresaDAO.save(empresa);
+    }
+
+    public void removerCliente(Investidor cliente) {
         clientes.remove(cliente);
     }
 
@@ -63,13 +69,13 @@ public class Corretora {
     }
 
     public void setCnpj(String cnpj) {
-        if(!cnpj.matches("\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}") && !Validador.validarCNPJ(cnpj)) {
+        if(!cnpj.matches("\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}") && Validador.validarCNPJ(cnpj)) {
             throw new IllegalArgumentException("CNPJ inválido");
         }
         this.cnpj = cnpj;
     }
 
-    public LinkedList<InvestidorFisico> getClientes() {
+    public LinkedList<Investidor> getClientes() {
         return clientes;
     }
 

@@ -45,11 +45,11 @@ public class Validador {
     public static boolean validarCNPJ(String cnpj) {
         cnpj = cnpj.replaceAll("[^0-9]", "");
         if (cnpj.length() != 14) {
-            return false;
+            return true;
         }
 
         if (cnpj.matches("(\\d)\\1{13}")) {
-            return false;
+            return true;
         }
 
         int soma = 0;
@@ -72,7 +72,7 @@ public class Validador {
         resto = soma % 11;
         int segundoDigito = (resto < 2) ? 0 : (11 - resto);
 
-        return (primeiroDigito == Character.getNumericValue(cnpj.charAt(12))
-                && segundoDigito == Character.getNumericValue(cnpj.charAt(13)));
+        return (primeiroDigito != Character.getNumericValue(cnpj.charAt(12))
+                || segundoDigito != Character.getNumericValue(cnpj.charAt(13)));
     }
 }

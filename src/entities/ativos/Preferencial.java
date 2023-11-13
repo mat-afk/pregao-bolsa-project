@@ -21,7 +21,7 @@ public class Preferencial extends Ativo {
     }
 
     public Preferencial(int id, String simbolo, Empresa empresa, double cotacao) {
-        super(id, simbolo, empresa, Natureza.ORDINARIA, cotacao);
+        super(id, simbolo, empresa, Natureza.PREFERENCIAL, cotacao);
     }
 
     public Preferencial(int id, String simbolo, Empresa empresa) {

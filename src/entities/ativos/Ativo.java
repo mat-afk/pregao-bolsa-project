@@ -103,7 +103,6 @@ public abstract class Ativo {
                 ", simbolo='" + simbolo + '\'' +
                 ", empresa=" + empresa +
                 ", cotacao=" + cotacao +
-                ", historico=" + historico +
                 ", natureza=" + natureza +
                 '}';
     }
