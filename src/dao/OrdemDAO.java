@@ -26,6 +26,25 @@ public class OrdemDAO {
         }
     }
 
+    public static void update(@NotNull Ordem updatedOrdem) {
+        LinkedList<Ordem> allOrdens = findAll();
+
+        for (Ordem ordem : allOrdens) {
+            if (ordem.getId() == updatedOrdem.getId()) {
+                ordem.setAtivo(updatedOrdem.getAtivo());
+                ordem.setInvestidor(updatedOrdem.getInvestidor());
+                ordem.setPreco(updatedOrdem.getPreco());
+                ordem.setQuantidade(updatedOrdem.getQuantidade());
+                ordem.setTipo(updatedOrdem.getTipo());
+                ordem.setDataEmissao(updatedOrdem.getDataEmissao());
+
+                save(ordem);
+            }
+        }
+
+        System.out.println("Ordem not found with ID: " + updatedOrdem.getId());
+    }
+
     public static @
             Nullable Ordem findById(int id) {
         try (BufferedReader arquivo = new BufferedReader(new FileReader(FILE_PATH))) {

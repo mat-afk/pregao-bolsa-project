@@ -52,6 +52,16 @@ public class Main {
         em2.lancarAtivo(at2);
         em3.lancarAtivo(at3);
 
+
+        InvestidorFisico in1 = new InvestidorFisico("Domingos Latorre", "004.572.878-02", 30000.0, c1, b3);
+        InvestidorFisico in2 = new InvestidorFisico("Ugo Henrique", "855.950.838-40", c2, b3);
+
+        c1.addInvestidorFisico(in1);
+        c2.addInvestidorFisico(in2);
+        in2.depositar(50000.0);
+
+        in1.solicitarCompra(at2, 82.50, 2);
+
         Sorting<Empresa> empresaSorting = new ShellSort<>();
         Empresa[] empresas = new Empresa[b3.getEmpresas().size()];
         for(int i = 0; i < EmpresaDAO.findAll().size(); i++) {
@@ -113,7 +123,6 @@ public class Main {
                             Corretora corretora = CorretoraDAO.findById(scan.nextInt());
 
                             usuario = new InvestidorFisico(nome, cpf, saldo, corretora, b3);
-                            InvestidorDAO.save((InvestidorFisico) usuario);
 
                             assert corretora != null;
                             corretora.addInvestidorFisico((InvestidorFisico) usuario);
@@ -144,7 +153,6 @@ public class Main {
                             Corretora corretora = CorretoraDAO.findById(scan.nextInt());
 
                             usuario = new Empresa(nome, cnpj, simbolo, capitalizacao, setor, corretora, b3);
-                            EmpresaDAO.save((Empresa) usuario);
 
                             assert corretora != null;
                             corretora.addIEmpresa((Empresa) usuario);
@@ -209,13 +217,21 @@ public class Main {
                         System.out.println("[" + ativo.getId() + "] " + ativo.getSimbolo());
                     }
                     int ativoId = scan.nextInt();
-                    LinkedList<Registro> registros = RegistroDAO.findByAtivo(Objects.requireNonNull(AtivoDAO.findById(ativoId)).getSimbolo());
-                    if(registros.isEmpty()) {
-                        System.out.println("Essa ação não possui registros de transações");
-                    } else {
-                        for(Registro registro : registros) {
-                            System.out.println(registro);
+                    Ativo selectedAtivo = AtivoDAO.findById(ativoId);
+                    if (selectedAtivo != null) {
+                        LinkedList<Registro> registros = RegistroDAO.findByAtivo(selectedAtivo.getSimbolo());
+                        if(registros.isEmpty()) {
+                            System.out.println("Essa ação não possui registros de transações");
+                        } else {
+                            for(Registro registro : registros) {
+                                System.out.println("[" + registro.getId() + "] " +
+                                        "\tativo: " + registro.getAtivo().getSimbolo() +
+                                        "\tpreço negociado: R$" + registro.getPrecoNegociado() +
+                                        "\tdata: " + registro.getData());
+                            }
                         }
+                    } else {
+                        System.out.println("Ativo não encontrado.");
                     }
 
                     scan.nextLine();
@@ -265,7 +281,10 @@ public class Main {
                     } else {
                         System.out.println("Sua carteira ----------------------------------------------\n");
                         for(Ativo ativo : carteira) {
-                            System.out.println("[" + ativo.getId() + "] " + ativo.getSimbolo() + "\tempresa: " + ativo.getEmpresa().getNome() + "\tcotação: " + ativo.getCotacao() + "\tnatureza: " + ativo.getNatureza());
+                            System.out.println("[" + ativo.getId() + "] " + ativo.getSimbolo() +
+                                    "\tempresa: " + ativo.getEmpresa().getNome() +
+                                    "\tcotação: " + ativo.getCotacao() +
+                                    "\tnatureza: " + ativo.getNatureza());
                         }
                     }
                     scan.nextLine();
@@ -284,8 +303,8 @@ public class Main {
                             assert usuario != null;
 
                             if (ordemInvestidor != null && ordemInvestidor.getId() == usuario.getId()) {
-                                System.out.println("[" + ordem.getId() + "]" + ordem.getAtivo().getSimbolo() + "\tpreço: " + ordem.getPreco() + "\ttipo: " + ordem.getTipo() +
-                                        "\tlotes: " + ordem.getQuantidade() + "\tdata de emissão: " + ordem.getDataEmissao());
+                                System.out.println("[" + ordem.getId() + "] " + ordem.getAtivo().getSimbolo() + "\tpreço: " + ordem.getPreco() + "\ttipo: " + ordem.getTipo() +
+                                        "\tlotes: " + ordem.getQuantidade() + "\t\tdata de emissão: " + ordem.getDataEmissao());
                             }
                         }
                     }

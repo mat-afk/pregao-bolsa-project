@@ -23,4 +23,9 @@ public class OrdemVenda extends Ordem {
     public OrdemVenda(Ativo ativo, Investidor investidor, double preco, int quantidade) {
         super(ativo, investidor, preco, quantidade, TipoOrdem.VENDA);
     }
+
+    @Override
+    public Investidor getInvestidor() {
+        return super.getInvestidor();
+    }
 }

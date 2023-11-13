@@ -74,6 +74,19 @@ public class Registro {
 
     public String formatToSave() {
         return String.format("%-5s%-5s%-5s%-30s%-10s%-15s%-7s",
-                getId(), getOrdemVenda().getId(), ordemCompra.getId(), getData(), getAtivo().getSimbolo(), getPrecoNegociado(), getVolume());
+                getId(), getOrdemVenda().getId(), getOrdemCompra().getId(), getData(), getAtivo().getSimbolo(), getPrecoNegociado(), getVolume());
+    }
+
+    @Override
+    public String toString() {
+        return "Registro{" +
+                "id=" + id +
+                ", data=" + data +
+                ", ativo=" + ativo +
+                ", ordemVenda=" + ordemVenda +
+                ", ordemCompra=" + ordemCompra +
+                ", precoNegociado=" + precoNegociado +
+                ", volume=" + volume +
+                '}';
     }
 }

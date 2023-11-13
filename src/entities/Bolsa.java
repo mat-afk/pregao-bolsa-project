@@ -1,12 +1,15 @@
 package entities;
 import dao.CorretoraDAO;
 import dao.EmpresaDAO;
+import dao.OrdemDAO;
 import dao.RegistroDAO;
 import estruturasdedados.Fila;
 import estruturasdedados.LinkedList;
 import entities.ordens.Ordem;
 import entities.ordens.OrdemCompra;
 import entities.ordens.OrdemVenda;
+
+import javax.sound.midi.Soundbank;
 
 public class Bolsa {
 
@@ -40,6 +43,7 @@ public class Bolsa {
             for(Ordem ordem : corretora.getOrdens()) {
                 if(ordem instanceof OrdemCompra) {
                     ordensDeCompra.enqueue(ordem);
+                    corretora.getOrdens().dequeue();
                     executarOrdens();
                 }
             }
@@ -51,6 +55,7 @@ public class Bolsa {
             for(Ordem ordem : corretora.getOrdens()) {
                 if(ordem instanceof OrdemVenda) {
                     ordensDeVenda.enqueue(ordem);
+                    corretora.getOrdens().dequeue();
                     executarOrdens();
                 }
             }
@@ -70,11 +75,11 @@ public class Bolsa {
 
             for (Ordem compra : ordensDeCompra) {
                 for (Ordem venda : ordensDeVenda) {
-                    if (encontrarCorrespondencia(compra, venda)) {
+                    if(encontrarCorrespondencia(compra, venda)) {
                         int quantidadeNegociada = Math.min(compra.getQuantidade(), venda.getQuantidade());
 
                         Registro registro = criarRegistro(compra, venda, quantidadeNegociada);
-                        atualizarCarteirasEHistoricos(compra, venda, quantidadeNegociada, registro);
+                        atualizarCarteirasEHistoricos((OrdemCompra) compra, (OrdemVenda) venda, quantidadeNegociada, registro);
 
                         RegistroDAO.save(registro);
 
@@ -87,7 +92,7 @@ public class Bolsa {
 
 
     private boolean encontrarCorrespondencia(Ordem compra, Ordem venda) {
-        return compra.getAtivo().equals(venda.getAtivo()) && compra.getPreco() >= venda.getPreco();
+        return compra.getAtivo().getSimbolo().equals(venda.getAtivo().getSimbolo()) && compra.getPreco() >= venda.getPreco();
     }
 
     private Registro criarRegistro(Ordem compra, Ordem venda, int quantidadeNegociada) {
@@ -100,7 +105,7 @@ public class Bolsa {
         );
     }
 
-    private void atualizarCarteirasEHistoricos(Ordem compra, Ordem venda, int quantidadeNegociada, Registro registro) {
+    private void atualizarCarteirasEHistoricos(OrdemCompra compra, OrdemVenda venda, int quantidadeNegociada, Registro registro) {
         compra.getAtivo().getHistorico().addRegistro(registro);
         venda.getAtivo().getHistorico().addRegistro(registro);
 
